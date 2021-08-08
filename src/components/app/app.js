@@ -4,17 +4,16 @@ import Header from '../header';
 import RandomChar from '../randomChar';
 import ItemList from '../itemList';
 import CharDetails from '../charDetails';
+import gotService from '../services/gotService';
 
 
 const App = () => {
     return (
         <> 
-            <Container>
-                <Header />
-            </Container>
+            <Header/>
             <Container>
                 <Row>
-                    <Col lg={{size: 5, offset: 0}}>
+                    <Col lg={{size: 6, offset: 0}}>
                         <RandomChar/>
                     </Col>
                 </Row>

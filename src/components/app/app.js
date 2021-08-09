@@ -4,7 +4,7 @@ import Header from '../header';
 import RandomChar from '../randomChar';
 import ItemList from '../itemList';
 import CharDetails from '../charDetails';
-import gotService from '../services/gotService';
+
 
 
 const App = () => {

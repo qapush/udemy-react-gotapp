@@ -10,7 +10,7 @@ import CharDetails from '../charDetails';
 export default class App extends Component {
     
     state = {
-        showRandonChar: false
+        showRandonChar: true
     }
 
     toggleRandomChar = () => {

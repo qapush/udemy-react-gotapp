@@ -5,15 +5,21 @@ import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
 
 export default class RandomChar extends Component {
-    constructor(){
-        super()
-        this.updateCharacter();
-    }
+
     gotService = new GotService();
 
     state = {
        char: {},
        loading: true
+    }
+
+    componentDidMount(){
+        this.updateCharacter();
+        this.timerID = setInterval(this.updateCharacter.bind(this), 3000);
+    }
+
+    componentWillUnmount(){
+        clearInterval(this.timerID);
     }
 
     onCharLoaded = (char) => {

@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import GotService from '../../services/gotService';
 import './randomChar.css';
 import Spinner from '../spinner';
-import ErrorMessage from '../errorMessage';
+import ErrorMessage from '../errorMessage'; 
 
 export default class RandomChar extends Component {
 

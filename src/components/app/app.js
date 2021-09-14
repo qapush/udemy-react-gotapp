@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Col, Row, Container, Button } from "reactstrap";
+import { Col, Row, Container } from "reactstrap";
 import Header from "../header";
 import RandomChar from "../randomChar";
 import ErrorMessage from "../errorMessage";
@@ -13,18 +13,11 @@ export default class App extends Component {
   gotService = new GotService();
 
   state = {
-    showRandonChar: true,
-    error: false,
+    error: false
   };
 
-  toggleRandomChar = () => {
-    this.setState((state) => ({
-      showRandonChar: !state.showRandonChar,
-    }));
-  };
 
   render() {
-    const { showRandonChar } = this.state;
     if (this.state.error) return <ErrorMessage />;
     return (
       <Router>
@@ -48,14 +41,7 @@ export default class App extends Component {
               <Route path="/" exact>
                 <Row>
                   <Col lg={{ size: 6, offset: 0 }}>
-                    {showRandonChar ? <RandomChar interval={15000}/> : null}
-                    <Button
-                      color="primary"
-                      className="mb-5"
-                      onClick={this.toggleRandomChar}
-                    >
-                      Toggle random character
-                    </Button>
+                    <RandomChar interval={10000}/>
                   </Col>
                 </Row>
               </Route>

@@ -39,11 +39,7 @@ export default class App extends Component {
               />
 
               <Route path="/" exact>
-                <Row>
-                  <Col lg={{ size: 6, offset: 0 }}>
-                    <RandomChar interval={10000}/>
-                  </Col>
-                </Row>
+                
               </Route>
               
               <Route path="*" component={LostPage}/>

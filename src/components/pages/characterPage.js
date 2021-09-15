@@ -4,6 +4,8 @@ import ItemDetails, {Field} from '../itemDetails';
 import ErrorMessage from '../errorMessage';
 import GotService from '../../services/gotService';
 import RowBlock from '../rowBlock';
+import {Row, Col} from 'reactstrap';
+import RandomChar from '../randomChar';
 
 export default class CharacterPage extends Component {
 
@@ -49,7 +51,14 @@ export default class CharacterPage extends Component {
 
 
         return(
+           <>
+            <Row>
+                  <Col lg={{ size: 6, offset: 0 }}>
+                    <RandomChar interval={10000}/>
+                  </Col>
+            </Row>
             <RowBlock left={itemList} right={itemDetails}/>
+           </>
         )
     }
 }

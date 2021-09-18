@@ -54,7 +54,7 @@ export default class CharacterPage extends Component {
            <>
             <Row>
                   <Col lg={{ size: 6, offset: 0 }}>
-                    <RandomChar interval={2500}/>
+                    <RandomChar interval={15000}/>
                   </Col>
             </Row>
             <RowBlock left={itemList} right={itemDetails}/>

@@ -1,94 +1,74 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import GotService from "../../services/gotService";
 import "./randomChar.css";
 import Spinner from "../spinner";
-import ErrorMessage from "../errorMessage";
-import PropTypes from "prop-types";
 import Button from "reactstrap/lib/Button";
 
-export default class RandomChar extends Component {
-  gotService = new GotService();
+function RandomChar({ interval }) {
+  const [showRandonChar, toggleRandomChar] = useState(true);
 
-  state = {
-    char: {},
-    loading: true,
-    showRandonChar: true,
-  };
-
-  componentDidMount() {
-    this.updateCharacter();
-    this.timerID = setInterval(
-      this.updateCharacter.bind(this),
-      this.props.interval
-    );
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
-
-  onCharLoaded = (char) => {
-    this.setState({
-      char,
-      loading: false,
-      error: false,
+  const onToggleRandomChar = () => {
+    toggleRandomChar((isRandomCharShown) => {
+      return !isRandomCharShown;
     });
   };
 
-  onError = (err) => {
-    this.setState({
-      error: true,
-      loading: false,
-    });
-  };
+  const details = showRandonChar ? <RandomChardetails interval={interval}/> : null;
 
-  updateCharacter() {
-    const id = Math.floor(Math.random() * 2138 + 1);
-    this.gotService
-      .getCharacter(id)
-      .then(this.onCharLoaded)
-      .catch(this.onError);
-  }
-
-  toggleRandomChar = () => {
-    this.setState((state) => ({
-      showRandonChar: !state.showRandonChar,
-    }));
-  };
-
-  render() {
-    const { char, loading, error, showRandonChar } = this.state;
-
-    const errorMessage = error ? <ErrorMessage /> : null;
-    const spinner = loading ? <Spinner /> : null;
-    const content = !(loading || error || !showRandonChar) ? (
-      <View char={char} />
-    ) : null;
-
-    return (
-      <>
-        {errorMessage}
-        {spinner}
-        {content}
-        <Button
-          color="primary"
-          className="mb-5"
-          onClick={this.toggleRandomChar}
-        >
-          Toggle random character
-        </Button>
-      </>
-    );
-  }
+  return (
+    <>
+      {details}
+      <Button
+        color="primary"
+        className="mb-5"
+        onClick={() => {
+          onToggleRandomChar();
+        }}
+      >
+        Toggle random character
+      </Button>
+    </>
+  );
 }
 
-RandomChar.defaultProps = {
-  interval: 2000
-};
+function RandomChardetails({interval}) {
+  const gotService = new GotService();
 
-RandomChar.propTypes = {
-  interval: PropTypes.number,
-};
+  const [char, updateChar] = useState({ name: "a" });
+  const [loading, isLoading] = useState(true);
+
+  useEffect(() => {
+    updateCharacter();
+
+    const timerID = setInterval(updateCharacter, interval);
+
+    return (()=>{
+      clearInterval(timerID);
+    })
+  }, []);
+
+  function updateCharacter() {
+      const id = Math.floor(Math.random() * 2138 + 1);
+      gotService
+        .getCharacter(id)
+        .then( char => {
+          updateChar(char);
+          isLoading(false);
+        })
+    }
+
+
+
+  const spinner = loading ? <Spinner /> : null;
+  const content = !(loading) ? <View char={char} /> : null;
+
+  return (
+    <>
+      {spinner}
+      {content}
+    </>
+  );
+}
 
 const View = ({ char }) => {
   const { name, gender, born, died, culture } = char;
@@ -119,3 +99,5 @@ const View = ({ char }) => {
     </>
   );
 };
+
+export default RandomChar;  

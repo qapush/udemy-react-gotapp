@@ -1,45 +1,27 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import './itemList.css';
 import Spinner from '../spinner';
-import ErrorMessage from '../errorMessage';
-import PropTypes from 'prop-types';
 
-export default class ItemList extends Component {
+function ItemList({getData, onItemSelected, renderItem}) {
 
-
-    state = {
-        itemList: null,
-        error: false
-    }
-    componentDidMount() {
-
-        const {getData} = this.props;
-
+    const [itemList, updateList] = useState([]);
+    
+    useEffect(() =>{
         getData()
-            .then((itemList) => {
-                this.setState({
-                    itemList,
-                    error: false
-                });
+            .then((data) => {
+                updateList(data);
             })
-            // .catch(() => {this.onError()}); 
-    }
- 
-    onError(status){
-        this.setState({
-            itemList: null,
-            error: true
-        })
-    }
-    renderItems(arr) {
+    }, [])
+
+    function renderItems(arr) {
         return arr.map((item) => {
             const {id} = item,
-                  label = this.props.renderItem(item);
+                  label = renderItem(item);
             return (
                 <li
                     key={id}
                     className="list-group-item"
-                    onClick={() => this.props.onItemSelected(id)}
+                    onClick={() => onItemSelected(id)}
                     >
                     {label}
                 </li>
@@ -47,32 +29,18 @@ export default class ItemList extends Component {
         })
     }
 
-
-    render() {
-        const {itemList, error} = this.state;
-
-        if(error){
-            return <ErrorMessage/>
-        }
-
-        if(!itemList) {
-            return <Spinner/>
-        }
-
-        const items = this.renderItems(itemList);
-
-        return (
-            <ul className="item-list list-group">
-                {items}
-            </ul>
-        );
+    if(!itemList) {
+        return <Spinner/>
     }
+
+    const items = renderItems(itemList);
+
+    return (
+        <ul className="item-list list-group">
+            {items}
+        </ul>
+    );
+
 }
 
-ItemList.defaultProps = {
-    onItemSelected: () => {    }
-}
-
-ItemList.propTypes = {
-    onItemSelected: PropTypes.func
-}
+export default ItemList;
